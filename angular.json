@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "workshop-app-june2020"
+    }
+  },
+  "defaultProject": "workshop-app-june2020",
+  "cli": {
+    "analytics": false
+  }
 }
