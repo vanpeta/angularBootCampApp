@@ -1,1 +1,7 @@
-<p>video-list works!</p>
+<div *ngFor="let video of videos">
+  <img
+    [src]="'https://img.youtube.com/vi/' + video.id + '/hqdefault.jpg'"
+    [alt]="video.title + ' thumbnail image'"
+  />
+  <p>{{ video.title }} - {{ video.author }}</p>
+</div>
