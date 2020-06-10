@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { videoData } from '../../data';
+import { Video } from '../../types';
 
 @Component({
   selector: 'app-video-dashboard',
@@ -9,4 +10,9 @@ import { videoData } from '../../data';
 })
 export class VideoDashboardComponent {
   videoList = videoData;
+  selectedVideo: Video | undefined;
+
+  setSelectedVideo(video: Video) {
+    this.selectedVideo = video;
+  }
 }
