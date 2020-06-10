@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+
+import { videoData } from '../../data';
 
 @Component({
   selector: 'app-video-dashboard',
   templateUrl: './video-dashboard.component.html',
   styleUrls: ['./video-dashboard.component.scss'],
 })
-export class VideoDashboardComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
+export class VideoDashboardComponent {
+  videoList = videoData;
 }

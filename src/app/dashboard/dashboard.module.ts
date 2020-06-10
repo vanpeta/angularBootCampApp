@@ -6,6 +6,7 @@ import { VideoDashboardComponent } from './video-dashboard/video-dashboard.compo
 import { VideoListComponent } from './video-list/video-list.component';
 import { StatFiltersComponent } from './stat-filters/stat-filters.component';
 import { VideoPlayerComponent } from './video-player/video-player.component';
+import { VideoThumbnailComponent } from './video-thumbnail/video-thumbnail.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
     VideoListComponent,
     StatFiltersComponent,
     VideoPlayerComponent,
+    VideoThumbnailComponent,
   ],
   imports: [CommonModule, RouterModule.forChild(routes)],
 })

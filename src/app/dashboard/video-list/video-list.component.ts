@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-import { videoData } from '../../data';
 import { Video } from '../../types';
 
 @Component({
@@ -9,7 +8,7 @@ import { Video } from '../../types';
   styleUrls: ['./video-list.component.scss'],
 })
 export class VideoListComponent {
-  videos = videoData;
+  @Input() videos: Video[] = [];
   selectedVideo: Video | undefined;
 
   videoClicked(video: Video) {
