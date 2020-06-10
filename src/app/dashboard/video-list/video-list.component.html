@@ -1,4 +1,8 @@
-<div *ngFor="let video of videos">
+<div
+  *ngFor="let video of videos"
+  (click)="videoClicked(video)"
+  [class.selected]="video === selectedVideo"
+>
   <img
     [src]="'https://img.youtube.com/vi/' + video.id + '/hqdefault.jpg'"
     [alt]="video.title + ' thumbnail image'"
