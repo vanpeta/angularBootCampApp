@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-stat-filters',
   templateUrl: './stat-filters.component.html',
-  styleUrls: ['./stat-filters.component.css']
+  styleUrls: ['./stat-filters.component.css'],
 })
-export class StatFiltersComponent implements OnInit {
+export class StatFiltersComponent {
+  videoSearch = new FormControl('', [], []);
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor() {
+    this.videoSearch.valueChanges.subscribe((searchVal: number) =>
+      console.log(typeof searchVal)
+    );
   }
-
 }
