@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { Video } from '../../types';
+import { VideoDataService } from 'src/app/video-data.service';
 
 @Component({
   selector: 'app-video-dashboard',
@@ -9,15 +10,11 @@ import { Video } from '../../types';
   styleUrls: ['./video-dashboard.component.scss'],
 })
 export class VideoDashboardComponent {
-  videoList: Video[] = [];
+  videoList: Observable<Video[]>;
   selectedVideo: Video | undefined;
 
-  constructor(http: HttpClient) {
-    http
-      .get<Video[]>('https://api.angularbootcamp.com/videos')
-      .subscribe((response) => {
-        this.videoList = response;
-      });
+  constructor(vds: VideoDataService) {
+    this.videoList = vds.getTransformedVideos();
   }
 
   setSelectedVideo(video: Video) {
