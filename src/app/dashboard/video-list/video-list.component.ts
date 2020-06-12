@@ -10,9 +10,4 @@ import { Video } from '../../types';
 export class VideoListComponent {
   @Input() videos: Video[] = [];
   @Input() selectedVideo?: Video;
-  @Output() videoSelected = new EventEmitter<Video>();
-
-  videoClicked(video: Video) {
-    this.videoSelected.emit(video);
-  }
 }

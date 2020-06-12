@@ -1,17 +1,64 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, combineLatest } from 'rxjs';
+import { map, switchMap, shareReplay, withLatestFrom } from 'rxjs/operators';
 
 import { environment } from '../environments/environment';
 
 import { Video } from './types';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class VideoDataService {
-  constructor(private http: HttpClient) {}
+  currentlySelectedVideoHttp: Observable<Video | null>;
+  currentlySelectedVideoCombined: Observable<Video | null>;
+
+  constructor(private http: HttpClient, route: ActivatedRoute) {
+    const videoId: Observable<string | null> = route.queryParamMap.pipe(
+      map((params) => params.get('videoId'))
+    );
+
+    // truthy ({}, 'asd', -1, 1, []), falsy ('', 0, null, undefined)
+    // !falsey => true
+    // !truthy => false
+
+    // !!falsey => false
+    // !!truthy => true
+
+    // '5' == 5 (true)
+    // '5' === 5 (false)
+
+    this.currentlySelectedVideoHttp = videoId.pipe(
+      switchMap((id) => {
+        if (!!id) {
+          return http.get<Video>(`${environment.apiUrl}/videos/${id}`);
+        } else {
+          return of(null);
+        }
+      }),
+      shareReplay(1)
+    );
+
+    // withLatestFrom
+    // Can only use this if the `this.videos` global observable exists
+    // this.currentlySelectedVideoCombined = videoId.pipe(
+    //   withLatestFrom(this.videos),
+    //   map(args => {})
+    // );
+
+    // combineLatest
+    this.currentlySelectedVideoCombined = combineLatest([
+      videoId,
+      this.getTransformedVideos(),
+    ]).pipe(
+      map(([id, videos]) => {
+        return videos.find((video) => video.id === id) || null;
+      }),
+      shareReplay(1)
+    );
+  }
 
   getVideos(): Observable<Video[]> {
     return this.http.get<Video[]>(environment.apiUrl + '/videos');

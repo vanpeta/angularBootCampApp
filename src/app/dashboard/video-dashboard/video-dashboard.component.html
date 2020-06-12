@@ -1,7 +1,6 @@
 <app-video-list
   [videos]="videoList | async"
-  [selectedVideo]="selectedVideo"
-  (videoSelected)="setSelectedVideo($event)"
+  [selectedVideo]="selectedVideo | async"
 ></app-video-list>
-<app-video-player [video]="selectedVideo"></app-video-player>
+<app-video-player [video]="selectedVideo | async"></app-video-player>
 <app-stat-filters></app-stat-filters>

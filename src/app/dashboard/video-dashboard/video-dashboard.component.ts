@@ -11,13 +11,11 @@ import { VideoDataService } from 'src/app/video-data.service';
 })
 export class VideoDashboardComponent {
   videoList: Observable<Video[]>;
-  selectedVideo: Video | undefined;
+  selectedVideo: Observable<Video | null>;
 
   constructor(vds: VideoDataService) {
     this.videoList = vds.getTransformedVideos();
-  }
 
-  setSelectedVideo(video: Video) {
-    this.selectedVideo = video;
+    this.selectedVideo = vds.currentlySelectedVideoCombined;
   }
 }
