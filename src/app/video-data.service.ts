@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, combineLatest } from 'rxjs';
+import { Observable, of, combineLatest, BehaviorSubject } from 'rxjs';
 import { map, switchMap, shareReplay, withLatestFrom } from 'rxjs/operators';
 
 import { environment } from '../environments/environment';
@@ -15,9 +15,18 @@ export class VideoDataService {
   currentlySelectedVideoHttp: Observable<Video | null>;
   currentlySelectedVideoCombined: Observable<Video | null>;
 
+  filteredVideoList: Observable<Video[]>;
+
+  private videosFilter = new BehaviorSubject('');
+
   constructor(private http: HttpClient, route: ActivatedRoute) {
     const videoId: Observable<string | null> = route.queryParamMap.pipe(
       map((params) => params.get('videoId'))
+    );
+
+    this.filteredVideoList = this.videosFilter.pipe(
+      switchMap((filter) => this.getVideos(filter)),
+      shareReplay(1)
     );
 
     // truthy ({}, 'asd', -1, 1, []), falsy ('', 0, null, undefined)
@@ -60,8 +69,10 @@ export class VideoDataService {
     );
   }
 
-  getVideos(): Observable<Video[]> {
-    return this.http.get<Video[]>(environment.apiUrl + '/videos');
+  getVideos(q?: string): Observable<Video[]> {
+    return this.http.get<Video[]>(
+      `${environment.apiUrl}/videos${q ? `?q=${q}` : ''}`
+    );
   }
 
   getTransformedVideos(): Observable<Video[]> {
@@ -73,5 +84,9 @@ export class VideoDataService {
         }))
       )
     );
+  }
+
+  searchVideos(searchTerm: string) {
+    this.videosFilter.next(searchTerm);
   }
 }

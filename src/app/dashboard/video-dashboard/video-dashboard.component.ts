@@ -14,7 +14,7 @@ export class VideoDashboardComponent {
   selectedVideo: Observable<Video | null>;
 
   constructor(vds: VideoDataService) {
-    this.videoList = vds.getTransformedVideos();
+    this.videoList = vds.filteredVideoList;
 
     this.selectedVideo = vds.currentlySelectedVideoCombined;
   }
